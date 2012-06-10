@@ -3,15 +3,15 @@ $:.push File.expand_path("../lib", __FILE__)
 require "rack/webconsole/version"
 
 Gem::Specification.new do |s|
-  s.name        = "rack-webconsole"
+  s.name        = "rack-webconsole-pry"
   s.version     = Rack::Webconsole::VERSION
-  s.authors     = ["Josep M. Bach", "Josep Jaume Rey", "Oriol Gual"]
-  s.email       = ["info@codegram.com"]
-  s.homepage    = "http://github.com/codegram/rack-webconsole"
-  s.summary     = %q{Rack-based console inside your web applications}
-  s.description = %q{Rack-based console inside your web applications}
+  s.authors     = ["Josep M. Bach", "Josep Jaume Rey", "Oriol Gual", "Jan Berdajs"]
+  s.email       = ["mrbrdo@gmail.com"]
+  s.homepage    = "http://github.com/mrbrdo/rack-webconsole"
+  s.summary     = %q{Rack-based console inside your web applications, using pry}
+  s.description = %q{Rack-based console inside your web applications, using pry}
 
-  s.rubyforge_project = "rack-webconsole"
+  s.rubyforge_project = "rack-webconsole-pry"
 
   s.add_runtime_dependency 'rack'
   s.add_runtime_dependency 'multi_json', '>= 1.0.3'

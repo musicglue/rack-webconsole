@@ -1,4 +1,4 @@
-#rack-webconsole [![Build Status](http://travis-ci.org/codegram/rack-webconsole.png)](http://travis-ci.org/codegram/rack-webconsole.png)
+#rack-webconsole [![Build Status](http://travis-ci.org/mrbrdo/rack-webconsole.png)](http://travis-ci.org/mrbrdo/rack-webconsole.png)
 
 Rack-webconsole is a Rack-based interactive console (à la Rails console) in
 your web application's frontend. That means you can interact with your
@@ -16,6 +16,12 @@ Tested with MRI versions 1.8.7, 1.9.2, ruby-head, and JRuby 1.6.3.
 
 **SECURITY NOTE**: From version v0.0.5 rack-webconsole uses a token system to
 protect against cross-site request forgery.
+
+##Changes from original rack-webconsole
+
+* Uses pry instead of ripl
+* Supports colors
+
 
 ##Resources
 
