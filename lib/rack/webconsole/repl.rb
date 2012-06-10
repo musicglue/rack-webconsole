@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'multi_json'
 require 'digest/sha1'
+require 'pry'
 
 module Rack
   class Webconsole
@@ -68,22 +69,29 @@ module Rack
         return [status, headers, response] unless check_legitimate(req)
 
         hash = {}
-        require 'pry'
-        output = StringIO.new(output_str = "")
-        Pry.pager = false
-        pry = Pry.new(:output => output, :pager => false)
-        target = Pry.binding_for(TOPLEVEL_BINDING)
-        pry.repl_prologue(target)
-        target = Pry.binding_for(pry.binding_stack.last)
+        $pry_output ||= StringIO.new("")
+        $pry_output.string = ""
+        if $pry.blank?
+          Pry.pager = false
+          $pry = Pry.new(:output => $pry_output, :pager => false)
+        end
+        pry = $pry
+        
+        # repl loop
+        target = Pry.binding_for(pry.binding_stack.last || TOPLEVEL_BINDING)
+        pry.repl_prologue(target) unless pry.binding_stack.last == target
         pry.inject_sticky_locals(target)
         code = params['query']
         hash[:prompt] = pry.select_prompt("", target) + Pry::Code.new(code).to_s
-        result = target.eval(code, Pry.eval_path, Pry.current_line)
-        pry.set_last_result(result, target, code)
-        pry.show_result(result) if pry.should_print?
-        pry.repl_epilogue(target)
+        if !pry.process_command(code, "", target)
+          result = target.eval(code, Pry.eval_path, Pry.current_line)
+          pry.set_last_result(result, target, code)
+          pry.show_result(result) if pry.should_print?
+        end
+        # cleanup (supposed to call when $pry is destroyed)
+        # pry.repl_epilogue(target)
         
-        hash[:result] = output_str
+        hash[:result] = $pry_output.string
         response_body = MultiJson.encode(hash)
         headers = {}
         headers['Content-Type'] = 'application/json'

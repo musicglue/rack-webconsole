@@ -61,7 +61,7 @@
 		str = str.replace(/\u001B(\[[0-9;]+m)/g, function(fm, sm) {
 			return '</span><span style="'+bashColorToHtml(sm)+'">';
 		});
-		str = str.replace("\n", "<br>");
+		str = str.replace(/\n/g, "<br>");
 		return '<span>'+str+'</span>';
 	}
   $("#rack-webconsole form input").keyup(function(event) {
