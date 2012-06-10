@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-webconsole-pry (0.1.4)
+    rack-webconsole-pry (0.1.5)
       json
       multi_json (>= 1.0.3)
       pry
