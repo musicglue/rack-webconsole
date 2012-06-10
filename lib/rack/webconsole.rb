@@ -23,7 +23,7 @@ module Rack
   # variables and giving a true IRB-esque experience.
   #
   class Webconsole
-    @@config = {:inject_jquery => false, :key_code => "96"}
+    @@config = {:inject_jquery => false, :key_code => "96", :dev_only => true}
 
     class << self
       # Returns whether the Asset injecter must inject JQuery or not.
@@ -54,6 +54,14 @@ module Rack
         value = value.to_s unless value.is_a?(String)
         @@config[:key_code] = value
       end
+      
+      def dev_only
+        @@config[:dev_only]
+      end
+      
+      def dev_only=(value)
+        @@config[:dev_only] = value
+      end
     end
 
     # Honor the Rack contract by saving the passed Rack application in an ivar.
@@ -71,6 +79,10 @@ module Rack
     #
     # @param [Hash] env a Rack request environment.
     def call(env)
+      unless Rails.env.development? || !Webconsole.dev_only
+        status, headers, response = @app.call(env)
+        return [status, headers, response]
+      end
       if env['PATH_INFO'] == '/webconsole'
         Repl.new(@app).call(env)
       else
