@@ -23,7 +23,7 @@ module Rack
 
         response = @repl.call(env).last.first
 
-        MultiJson.decode(response)['result'].must_include "8" # include because of coloring characters
+        MultiJson.load(response)['result'].must_include "8" # include because of coloring characters
       end
 
       it 'maintains local state in subsequent calls thanks to an evil global variable' do

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     rack-webconsole-pry (0.1.4)
+      json
       multi_json (>= 1.0.3)
       pry
       rack
@@ -11,6 +12,7 @@ GEM
   specs:
     bluecloth (2.2.0)
     coderay (1.0.6)
+    json (1.7.3)
     metaclass (0.0.1)
     method_source (0.7.1)
     minitest (2.11.4)
@@ -35,7 +37,6 @@ DEPENDENCIES
   bluecloth
   minitest
   mocha
-  pry
   purdytest
   rack-webconsole-pry!
   rake

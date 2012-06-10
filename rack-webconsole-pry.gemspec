@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "rack-webconsole-pry"
 
   s.add_runtime_dependency 'rack'
+  s.add_runtime_dependency 'json'
   s.add_runtime_dependency 'multi_json', '>= 1.0.3'
   s.add_runtime_dependency 'pry'
 
@@ -28,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'bluecloth'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'pry'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
