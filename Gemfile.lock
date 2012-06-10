@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-webconsole (0.1.3)
+    rack-webconsole-pry (0.1.4)
       multi_json (>= 1.0.3)
       pry
       rack
@@ -37,6 +37,6 @@ DEPENDENCIES
   mocha
   pry
   purdytest
-  rack-webconsole!
+  rack-webconsole-pry!
   rake
   yard
