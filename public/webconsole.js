@@ -18,14 +18,17 @@
 	function rgbToHex(r, g, b) {
 	    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 	}
-	
+	var prevStyle = {
+		color: "#ffffff",
+		bold: false,
+		underline: false
+	}
 	function bashColorToHtml(bcolor)
 	{
-		var str = "[0m 238 238 238 \
-		[1m 255 255 255 \
-		[0m 238 238 238 \
-		[1m 255 255 255 \
-		[0;30m 238 238 238 \
+		// colors
+		var textColor = rgbToHex(238, 238, 238);
+		var boldColor = rgbToHex(255, 255, 255);
+		var strColors = "[0;30m 238 238 238 \
 		[1;37m 255 255 255 \
 		[0;34m 150 203 254 \
 		[1;34m 181 220 254 \
@@ -42,23 +45,43 @@
 		[1;30m 124 124 124 \
 		[0;37m 238 238 238";
 		var colors = {};
-		var matcher = /(\[[0-9;]+m)\s+(\d+)\s+(\d+)\s+(\d+)/gm;
-		while ((r = matcher.exec(str)) != null) {
-			colors[r[1]] = rgbToHex(parseInt(r[2]), parseInt(r[3]), parseInt(r[4]));
+		var boldColors = {};
+		var matcher = /\[([0-9;]+)m\s+(\d+)\s+(\d+)\s+(\d+)/gm;
+		while ((r = matcher.exec(strColors)) != null) {
+			components = r[1].split(";")
+			if (components[0] == "0")
+				colors[components[1]] = rgbToHex(parseInt(r[2]), parseInt(r[3]), parseInt(r[4]));
+			else
+				boldColors[components[1]] = rgbToHex(parseInt(r[2]), parseInt(r[3]), parseInt(r[4]));
 		}
-		if (/^\[\d\d/.exec(bcolor)) {
-			bcolor = "[0;" + bcolor.substr(1)
-		}
-		var res = 'color:' + colors[bcolor] + ';font-weight:';
-		if (bcolor[1] == "1")
-			res += 'bold';
+		// set values
+		all = bcolor.split(/;/g)
+		if (all.indexOf("0") >= 0 && all.indexOf("0") > 0) // ignore anything before 0, since 0 resets
+			all.splice(0, all.indexOf("0"));
+		if (all.indexOf("0") >= 0)
+			prevStyle = {
+				color: textColor,
+				bold: false,
+				underline: false
+			};
+		if (all.indexOf("1") >= 0)
+			prevStyle['bold'] = true;
+		if (all.indexOf("4") >= 0)
+			prevStyle['underline'] = true;
+		if (prevStyle['bold'])
+			colorMap = boldColors;
 		else
-			res += 'normal';
-		return res;
+		  colorMap = colors;
+		$.each(all, function(idx, val) {
+			if (colorMap[val] != undefined)
+				prevStyle['color'] = colorMap[val];
+		});
+		return 'color:'+prevStyle['color']+';font-weight:'+(prevStyle['bold'] ? 'bold' : 'normal')+
+			';text-decoration:'+(prevStyle['underline'] ? 'underline' : 'none');
 	}
 	function parseBashString(str)
 	{
-		str = str.replace(/\u001B(\[[0-9;]+m)/g, function(fm, sm) {
+		str = str.replace(/\u001B\[([0-9;]+)m/g, function(fm, sm) {
 			return '</span><span style="'+bashColorToHtml(sm)+'">';
 		});
 		str = str.replace(/\n/g, "<br>");
