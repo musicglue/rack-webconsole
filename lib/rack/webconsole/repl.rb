@@ -92,6 +92,7 @@ module Rack
         rescue StandardError => e
           $pry_output.write("Error: " + e.message)
         end
+        
         # cleanup (supposed to call when $pry is destroyed)
         # pry.repl_epilogue(target)
         
