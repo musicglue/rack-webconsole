@@ -71,7 +71,7 @@ module Rack
         hash = {}
         $pry_output ||= StringIO.new("")
         $pry_output.string = ""
-        if $pry.blank?
+        if $pry.nil?
           Pry.pager = false
           $pry = Pry.new(:output => $pry_output, :pager => false)
         end
@@ -83,10 +83,14 @@ module Rack
         pry.inject_sticky_locals(target)
         code = params['query']
         hash[:prompt] = pry.select_prompt("", target) + Pry::Code.new(code).to_s
+        begin
         if !pry.process_command(code, "", target)
           result = target.eval(code, Pry.eval_path, Pry.current_line)
           pry.set_last_result(result, target, code)
           pry.show_result(result) if pry.should_print?
+        end
+        rescue StandardError => e
+          $pry_output.write("Error: " + e.message)
         end
         # cleanup (supposed to call when $pry is destroyed)
         # pry.repl_epilogue(target)
