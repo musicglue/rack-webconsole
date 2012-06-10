@@ -2,8 +2,6 @@
 require 'rack/webconsole/repl'
 require 'rack/webconsole/asset_helpers'
 require 'rack/webconsole/assets'
-require 'rack/webconsole/sandbox'
-require 'rack/webconsole/shell'
 
 require 'rack/webconsole/railtie' if defined?(Rails::Railtie)
 

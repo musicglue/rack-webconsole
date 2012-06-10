@@ -67,8 +67,23 @@ module Rack
 
         return [status, headers, response] unless check_legitimate(req)
 
-        $sandbox ||= Sandbox.new
-        hash = Shell.eval_query params['query']
+        hash = {}
+        require 'pry'
+        output = StringIO.new(output_str = "")
+        Pry.pager = false
+        pry = Pry.new(:output => output, :pager => false)
+        target = Pry.binding_for(TOPLEVEL_BINDING)
+        pry.repl_prologue(target)
+        target = Pry.binding_for(pry.binding_stack.last)
+        pry.inject_sticky_locals(target)
+        code = params['query']
+        hash[:prompt] = pry.select_prompt("", target) + Pry::Code.new(code).to_s
+        result = target.eval(code, Pry.eval_path, Pry.current_line)
+        pry.set_last_result(result, target, code)
+        pry.show_result(result) if pry.should_print?
+        pry.repl_epilogue(target)
+        
+        hash[:result] = output_str
         response_body = MultiJson.encode(hash)
         headers = {}
         headers['Content-Type'] = 'application/json'
