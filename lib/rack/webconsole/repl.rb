@@ -78,7 +78,11 @@ module Rack
         pry = $pry
         
         # repl loop
-        target = Pry.binding_for(pry.binding_stack.last || TOPLEVEL_BINDING)
+        if pry.binding_stack.last
+          target = Pry.binding_for(pry.binding_stack.last)
+        else
+          target = Pry.binding_for(TOPLEVEL_BINDING)
+        end
         pry.repl_prologue(target) unless pry.binding_stack.last == target
         pry.inject_sticky_locals(target)
         code = params['query']

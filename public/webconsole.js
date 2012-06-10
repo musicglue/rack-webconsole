@@ -151,7 +151,7 @@
 
   $(document).ready(function() {
     $(this).keypress(function(event) {
-      if (event.which == $KEY_CODE) {
+      if ($KEY_CODE.indexOf(event.which) >= 0) {
         $("#rack-webconsole").slideToggle('fast', function() {
           if ($(this).is(':visible')) {
             $("#rack-webconsole form input").focus();
