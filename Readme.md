@@ -20,7 +20,7 @@ protect against cross-site request forgery.
 ##Changes from original rack-webconsole
 
 * Uses pry instead of ripl
-* Supports colors
+* Supports colors (used colors from the OS X IR\_Black theme for Terminal)
 
 
 ##Resources
@@ -34,7 +34,7 @@ protect against cross-site request forgery.
 In your Gemfile:
 
 ```ruby
-gem 'rack-webconsole'
+gem 'rack-webconsole-pry', :require => 'rack-webconsole'
 ```
 
 Rack-webconsole **needs JQuery**. If you are using Rails 3, JQuery is loaded by
