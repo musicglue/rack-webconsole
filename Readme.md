@@ -1,6 +1,6 @@
-#rack-webconsole [![Build Status](http://travis-ci.org/mrbrdo/rack-webconsole.png)](http://travis-ci.org/mrbrdo/rack-webconsole.png)
+#rack-webconsole-pry [![Build Status](http://travis-ci.org/mrbrdo/rack-webconsole.png)](http://travis-ci.org/mrbrdo/rack-webconsole.png)
 
-Rack-webconsole is a Rack-based interactive console (à la Rails console) in
+rack-webconsole-pry is a Rack-based interactive console (à la Rails console) in
 your web application's frontend. That means you can interact with your
 application's backend from within the browser itself!
 
@@ -8,7 +8,7 @@ To get a clearer idea, you can check out this video showing a live example :)
 
 [![YouTube video](http://img.youtube.com/vi/yKK5J01Dqts/0.jpg)](http://youtu.be/yKK5J01Dqts?hd=1)
 
-Rack-webconsole is a Rack middleware designed to be unobtrusive. With Rails 3,
+rack-webconsole-pry is a Rack middleware designed to be unobtrusive. With Rails 3,
 for example, you only have to include the gem in your Gemfile and it already
 works. Without any configuration.
 
@@ -37,9 +37,9 @@ In your Gemfile:
 gem 'rack-webconsole-pry', :require => 'rack-webconsole'
 ```
 
-Rack-webconsole **needs JQuery**. If you are using Rails 3, JQuery is loaded by
+rack-webconsole-pry **needs JQuery**. If you are using Rails 3, JQuery is loaded by
 default. In case you don't want to use JQuery in your application,
-**rack-webconsole can inject it for you** only when it needs it. To do that you
+**rack-webconsole-pry can inject it for you** only when it needs it. To do that you
 should put this line somewhere in your application (a Rails initializer, or
 some configuration file):
 
