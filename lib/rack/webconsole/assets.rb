@@ -23,6 +23,7 @@ module Rack
       #
       # @param [Hash] env a Rack request environment.
       def call(env)
+        p env
         status, headers, response = @app.call(env)
         return [status, headers, response] unless check_html?(headers, response) && status == 200
 
@@ -63,6 +64,7 @@ module Rack
       private
 
       def check_html?(headers, response)
+        p response
         body = response.respond_to?(:body) ? response.body : response.first
         headers['Content-Type'] and
           headers['Content-Type'].include? 'text/html' and
