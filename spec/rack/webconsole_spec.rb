@@ -1,5 +1,11 @@
 require 'spec_helper'
 
+class Rails
+  def self.env
+    OpenStruct.new :development? => true
+  end
+end
+
 module Rack
   describe Webconsole do
 
@@ -19,7 +25,7 @@ module Rack
         repl = stub
         Webconsole::Repl.expects(:new).with(@app).returns repl
         repl.expects(:call).with @env
-
+        
         @webconsole.call(@env)
       end
 
