@@ -51,7 +51,9 @@ module Rack
       #
       # @param [String] value key code used at keypress event to start web console.
       def key_code=(value)
-        value = value.to_s unless value.is_a?(String)
+        value = [value] unless value.kind_of?(Array)
+        value.map! {|v| v.to_i }
+        value = MultiJson::encode(value)
         @@config[:key_code] = value
       end
     end

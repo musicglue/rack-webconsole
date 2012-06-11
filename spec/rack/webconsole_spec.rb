@@ -43,13 +43,13 @@ module Rack
         Webconsole.inject_jquery.must_equal true
       end
       it '#key_code accessors' do
-        Webconsole.key_code.must_equal "96"
+        Webconsole.key_code.must_equal "[96]"
         Webconsole.key_code = "97"
-        Webconsole.key_code.must_equal "97"
+        Webconsole.key_code.must_equal "[97]"
       end
       it '#key_code setter cast parameter type' do
         Webconsole.key_code = 96
-        Webconsole.key_code.must_equal "96"
+        Webconsole.key_code.must_equal "[96]"
       end
     end
   end
