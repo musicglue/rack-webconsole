@@ -15,8 +15,8 @@ module Rack
       it 'evaluates the :query param in a sandbox and returns the result' do
         @app = lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['hello world']] }
         env = {}
-        Webconsole::Repl.stubs(:token).returns('abc')
-        request = OpenStruct.new(:params => {'query' => 'a = 4; a * 2', 'token' => 'abc'}, :post? => true)
+        Webconsole::Repl.stubs(:token_valid?).returns(true)
+        request = OpenStruct.new(:params => {'query' => 'a = 4; a * 2'}, :post? => true)
         Rack::Request.stubs(:new).returns request
 
         @repl = Webconsole::Repl.new(@app)
@@ -29,8 +29,8 @@ module Rack
       it 'maintains local state in subsequent calls thanks to an evil global variable' do
         @app = lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['hello world']] }
         env = {}
-        Webconsole::Repl.stubs(:token).returns('abc')
-        request = OpenStruct.new(:params => {'query' => 'a = 4', 'token' => 'abc'}, :post? => true)
+        Webconsole::Repl.stubs(:token_valid?).returns(true)
+        request = OpenStruct.new(:params => {'query' => 'a = 4'}, :post? => true)
         Rack::Request.stubs(:new).returns request
         @repl = Webconsole::Repl.new(@app)
 
@@ -47,8 +47,8 @@ module Rack
       it "returns any found errors prepended with 'Error:'" do
         @app = lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['hello world']] }
         env = {}
-        Webconsole::Repl.stubs(:token).returns('abc')
-        request = OpenStruct.new(:params => {'query' => 'unknown_method', 'token' => 'abc'}, :post? => true)
+        Webconsole::Repl.stubs(:token_valid?).returns(true)
+        request = OpenStruct.new(:params => {'query' => 'unknown_method'}, :post? => true)
         Rack::Request.stubs(:new).returns request
         @repl = Webconsole::Repl.new(@app)
 
@@ -85,12 +85,6 @@ module Rack
     end
 
     describe 'class methods' do
-      describe '#reset_token and #token' do
-        it 'returns the security token' do
-          Webconsole::Repl.reset_token
-          Webconsole::Repl.token.must_be_kind_of String
-        end
-      end
       describe '#request= and #request' do
         it 'returns the request object' do
           request = stub
