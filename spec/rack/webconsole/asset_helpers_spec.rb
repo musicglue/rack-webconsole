@@ -2,7 +2,9 @@
 require 'spec_helper'
 
 class AssetClass
-  include Rack::Webconsole::AssetHelpers
+  def method_missing name, *args, &block
+    Rack::Webconsole::AssetHelpers.send(name, *args, &block)
+  end
 end
 
 module Rack
@@ -16,6 +18,17 @@ module Rack
         html.must_match /console/
         html.must_match /results/
         html.must_match /form/
+      end
+    end
+    
+    describe "#code" do
+      it 'injects the token and key_code' do
+        Webconsole.key_code = "96"
+
+        assets_code = AssetClass.new.code
+
+        assets_code.must_include Rack::Webconsole::Repl::class_variable_get("@@tokens").keys.first
+        assets_code.must_match /\[96\]/
       end
     end
 

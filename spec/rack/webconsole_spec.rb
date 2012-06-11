@@ -28,18 +28,6 @@ module Rack
         
         @webconsole.call(@env)
       end
-
-      it 'passes the call to the Assets middleware otherwise' do
-        @app = stub
-        @webconsole = Webconsole.new(@app)
-        @env = {'PATH_INFO' => '/whatever'}
-
-        assets = stub
-        Webconsole::Assets.expects(:new).with(@app).returns assets
-        assets.expects(:call).with @env
-
-        @webconsole.call(@env)
-      end
     end
 
     describe 'class methods' do

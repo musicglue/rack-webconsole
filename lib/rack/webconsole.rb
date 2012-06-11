@@ -1,7 +1,6 @@
 # encoding: utf-8
 require 'rack/webconsole/repl'
 require 'rack/webconsole/asset_helpers'
-require 'rack/webconsole/assets'
 
 require 'rack/webconsole/railtie' if defined?(Rails::Railtie)
 
@@ -81,14 +80,11 @@ module Rack
     #
     # @param [Hash] env a Rack request environment.
     def call(env)
-      unless Rails.env.development? || !Webconsole.dev_only
-        status, headers, response = @app.call(env)
-        return [status, headers, response]
-      end
-      if env['PATH_INFO'] == '/webconsole'
+      if env['PATH_INFO'] == '/webconsole' && (Rails.env.development? || !Webconsole.dev_only)
         Repl.new(@app).call(env)
       else
-        Assets.new(@app).call(env)
+        status, headers, response = @app.call(env)
+        return [status, headers, response]
       end
     end
   end

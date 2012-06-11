@@ -10,12 +10,30 @@ module Rack
     # isn't usually a concern.
     #
     module AssetHelpers
+      
+      # Returns a string with all the HTML, CSS and JavaScript code needed for
+      # the view.
+      #
+      # It puts the security token inside the JavaScript to make AJAX calls
+      # secure.
+      #
+      # @return [String] the injectable code.
+      def self.code
+        # Regenerate the security token
+        token = Webconsole::Repl.reset_token
+        html_code <<
+          css_code <<
+          render(js_code, :TOKEN => token, :KEY_CODE => Webconsole.key_code)
+      end
+      
+      private
+      
       # Loads the HTML from a file in `/public`.
       #
       # It contains a form and the needed divs to render the console.
       #
       # @return [String] the injectable HTML.
-      def html_code
+      def self.html_code
         out = ""
         out << asset('jquery.html') if Webconsole.inject_jquery
         out << asset('webconsole.html')
@@ -27,7 +45,7 @@ module Rack
       # It contains the styles for the console.
       #
       # @return [String] the injectable CSS.
-      def css_code
+      def self.css_code
         '<style type="text/css">' <<
           asset('webconsole.css') <<
           '</style>'
@@ -38,7 +56,7 @@ module Rack
       # It contains the JavaScript logic of the webconsole.
       #
       # @return [String] the injectable JavaScript.
-      def js_code
+      def self.js_code
         '<script type="text/javascript">' <<
           asset('webconsole.js') <<
           '</script>'
@@ -51,7 +69,7 @@ module Rack
       # and its values
       #
       # @return [String] the javascript code with the interpolated variables
-      def render(javascript, variables = {})
+      def self.render(javascript, variables = {})
         javascript_with_variables = javascript.dup
         variables.each_pair do |variable, value|
           javascript_with_variables.gsub!("$#{variable}", value)
@@ -59,14 +77,12 @@ module Rack
         javascript_with_variables
       end
 
-      private
-
-      def asset(file)
-        @assets ||= {}
+      def self.asset(file)
+        @@assets ||= {}
         output = ::File.open(::File.join(::File.dirname(__FILE__), '..', '..', '..', 'public', file), 'r:UTF-8') do |f|
           f.read
         end
-        @assets[file] ||= output
+        @@assets[file] ||= output
       end
     end
   end

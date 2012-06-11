@@ -30,7 +30,7 @@ module Rack
         end
 
         # Regenerates the token.
-        def reset_token(app, env)
+        def reset_token
           clear_tokens
           token = Digest::SHA1.hexdigest("#{rand(36**8)}#{Time.now}")[4..20]
           @@tokens[token] = Time.now + 30 * 60
