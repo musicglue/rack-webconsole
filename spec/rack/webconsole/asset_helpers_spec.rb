@@ -27,7 +27,7 @@ module Rack
 
         assets_code = AssetClass.new.code
 
-        assets_code.must_include Rack::Webconsole::Repl::class_variable_get("@@tokens").keys.first
+        assets_code.must_include Rack::Webconsole::Repl::send(:class_variable_get, "@@tokens").keys.first
         assets_code.must_match /\[96\]/
       end
     end
