@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'rack'
   s.add_runtime_dependency 'json'
-  s.add_runtime_dependency 'multi_json', '>= 1.0.3'
+  s.add_runtime_dependency 'multi_json', '~> 1.5.0'
   s.add_runtime_dependency 'pry'
 
   s.add_development_dependency 'minitest'
